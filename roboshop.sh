@@ -20,17 +20,17 @@ INSTANCE_ID=$( aws ec2 run-instances \
                     IP_ADDRESS=$(
                 aws ec2 describe-instances \
                     --instance-ids $INSTANCE_ID \
-                    --query "Reservations[].Instances[$@].PublicIpAddress" \
+                    --query "Reservations[].Instances[].PublicIpAddress" \
                     --output text          
                     )
         else 
                 IP_ADDRESS=$(
             aws ec2 describe-instances \
                 -- instance-ids $INSTANCE_ID \
-                --query "Reservations[].Instances[$@].PrivateIpAddress" \
+                --query "Reservations[].Instances[].PrivateIpAddress" \
                 --output text
         ) 
         fi            
-
+echo "IP Address of $INSTANCE is $IP_ADDRESS"
 
 done
