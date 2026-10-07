@@ -15,7 +15,7 @@ INSTANCE_ID=$( aws ec2 run-instances \
     --output text
 )
 
-echo "instance id : $INSTANCE_ID" 
+echo "instance id : $INSTANCE_ID  $instance" 
 
         if [ $instance == "frontend" ]; then
                     IP=$( aws ec2 describe-instances \
