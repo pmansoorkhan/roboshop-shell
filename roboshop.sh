@@ -31,6 +31,6 @@ INSTANCE_ID=$( aws ec2 run-instances \
                 --output text
         ) 
         fi            
-echo "IP Address of $INSTANCE is "$IP_ADDRESS""
+echo "IP Address :$IP_ADDRESS"
 
 done
