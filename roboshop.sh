@@ -21,13 +21,13 @@ echo "instance id : $INSTANCE_ID"
         if [ $INSTANCE_ID == "frontend" ]; then
                     IP=$( aws ec2 describe-instances \
                     --instance-ids "$INSTANCE_ID" \
-                    --query 'Reservations[].Instances[].PublicIpAddress'\
+                    --query 'Reservations[0].Instances[0].PublicIpAddress'\
                     --output text          
                     )
         else 
                 IP=$( aws ec2 describe-instances \
                 --instance-ids "$INSTANCE_ID" \
-                --query 'Reservations[].Instances[].PrivateIpAddress' \
+                --query 'Reservations[0].Instances[0].PrivateIpAddress' \
                 --output text
         ) 
         fi            
