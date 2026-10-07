@@ -2,6 +2,8 @@
 
 SG_ID="sg-0d30c826371107d41"
 AMI_ID="ami-0220d79f3f480ecf5"
+ZONE_ID="Z01032422UQPZQPC0HZ2Q"
+DOMAIN_NAME="shannu.online"
 
 for instance in "$@"
 do 
@@ -15,7 +17,7 @@ INSTANCE_ID=$( aws ec2 run-instances \
     --output text
 )
 
-echo "Instance Name and ID : "$instance" "$INSTANCE_ID"" 
+echo "Instance Name and ID : " ā$instance" "$INSTANCE_ID"" 
 
         if [ "$instance" == "frontend" ]; then
                     IP=$( aws ec2 describe-instances \
