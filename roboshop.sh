@@ -3,7 +3,6 @@
 SG_ID="sg-0d30c826371107d41"
 AMI_ID="ami-0220d79f3f480ecf5"
 
-
 for instance in "$@"
 do 
 
@@ -18,16 +17,16 @@ INSTANCE_ID=$( aws ec2 run-instances \
 
 echo "instance id : $INSTANCE_ID" 
 
-        if [ $INSTANCE_ID == "frontend" ]; then
+        if [ $instance == "frontend" ]; then
                     IP=$( aws ec2 describe-instances \
                     --instance-ids "$INSTANCE_ID" \
-                    --query 'Reservations[0].Instances[0].PublicIpAddress'\
+                    --query 'Reservations[].Instances[].PublicIpAddress'\
                     --output text          
                     )
         else 
                 IP=$( aws ec2 describe-instances \
                 --instance-ids "$INSTANCE_ID" \
-                --query 'Reservations[0].Instances[0].PrivateIpAddress' \
+                --query 'Reservations[].Instances[].PrivateIpAddress' \
                 --output text
         ) 
         fi            
