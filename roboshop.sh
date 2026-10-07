@@ -15,18 +15,18 @@ INSTANCE_ID=$( aws ec2 run-instances \
     --output text
 )
 
-echo "instance id : $INSTANCE_ID  $instance" 
+echo "Instance Name and ID : "$INSTANCE_ID"  "$instance"" 
 
-        if [ $instance == "frontend" ]; then
+        if [ "$instance" == "frontend" ]; then
                     IP=$( aws ec2 describe-instances \
                     --instance-ids "$INSTANCE_ID" \
-                    --query 'Reservations[].Instances[].PublicIpAddress'\
+                    --query "Reservations[].Instances[].PublicIpAddress" \
                     --output text          
                     )
         else 
                 IP=$( aws ec2 describe-instances \
                 --instance-ids "$INSTANCE_ID" \
-                --query 'Reservations[].Instances[].PrivateIpAddress' \
+                --query "Reservations[].Instances[].PrivateIpAddress" \
                 --output text
         ) 
         fi            
