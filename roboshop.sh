@@ -8,25 +8,25 @@ for INSTANCE in $@    # mongodb
 do 
 
 INSTANCE_ID=$( aws ec2 run-instances \
-    --image-id $AMI_ID \
+    --image-id "$AMI_ID" \
     --instance-type t3.micro \
-    --security-group-ids $SG_ID \
+    --security-group-ids "$SG_ID" \
     --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$INSTANCE}]" \
     --query 'Instances[0].InstanceId' \
     --output text
 )
 
-        if [ "$INSTANCE_ID" == "frontend" ]; then
+        if [ "$INSTANCE_ID"=="$INSTANCE" ]; then
                     IP_ADDRESS=$(
                 aws ec2 describe-instances \
-                    --instance-ids $INSTANCE_ID \
+                    --instance-ids "$INSTANCE_ID" \
                     --query "Reservations[].Instances[].PublicIpAddress" \
                     --output text          
                     )
         else 
                 IP_ADDRESS=$(
             aws ec2 describe-instances \
-                -- instance-ids $INSTANCE_ID \
+                --instance-ids "$INSTANCE_ID" \
                 --query "Reservations[].Instances[].PrivateIpAddress" \
                 --output text
         ) 
