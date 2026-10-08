@@ -17,7 +17,7 @@ INSTANCE_ID=$( aws ec2 run-instances \
     --output text
 )
 
-echo "Instance Name and ID : "$instance" "$INSTANCE_ID"" 
+echo "Instance Name and ID : "$instance", "$INSTANCE_ID"" 
 
         if [ "$instance" == "frontend" ]; then
                     IP=$( aws ec2 describe-instances \
@@ -47,7 +47,7 @@ echo "Instance Name and ID : "$instance" "$INSTANCE_ID""
           "Changes": [ {
           "Action": "UPSERT",
            "ResourceRecordSet": {
-            "Name": "$RECORD_NAME",
+            "Name": "'$RECORD_NAME'",
             "Type": "A",
             "TTL": "1",
            "ResourceRecords": [
@@ -60,5 +60,5 @@ echo "Instance Name and ID : "$instance" "$INSTANCE_ID""
             ]
         }
          '
-         echo "DNS Record Created for $instance : $RECORD_NAME -> $IP"
+         echo "DNS Record Created for $instance : "$RECORD_NAME" -> $IP"
 done
