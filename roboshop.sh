@@ -32,12 +32,11 @@ echo "Instance Name and ID : "$instance", "$INSTANCE_ID""
                 --instance-ids "$INSTANCE_ID" \
                 --query "Reservations[].Instances[].PrivateIpAddress" \
                 --output text
-
+                )
              RECORD_NAME="$instance.$DOMAIN_NAME"    #mongodb.shannu.online
-        ) 
+         
         fi            
         echo "IP Address :$IP"
-
 
           aws route53 change-resource-record-sets \
          --hosted-zone-id "$ZONE_ID" \
@@ -48,7 +47,7 @@ echo "Instance Name and ID : "$instance", "$INSTANCE_ID""
                         "ResourceRecordSet": {
                         "Name": "$RECORD_NAME",
                         "Type": "A",
-                        "TTL": 1 ,
+                        "TTL": 30 ,
                         "ResourceRecords": [
                                 {
                                  "Value": "'$IP'"
@@ -58,5 +57,5 @@ echo "Instance Name and ID : "$instance", "$INSTANCE_ID""
                 }
               ]
             }'
-         echo "DNS Record Created for $instance : "$RECORD_NAME" -> "$IP""
+         echo "DNS Record Created for $instance : "$RECORD_NAME" -> $IP"
 done
