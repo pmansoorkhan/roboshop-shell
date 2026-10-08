@@ -47,7 +47,7 @@ INSTANCE_ID=$( aws ec2 run-instances \
                         "ResourceRecordSet": {
                         "Name": "$RECORD_NAME",
                         "Type": "A",
-                        "TTL": 1 ,
+                        "TTL": 60 ,
                         "ResourceRecords": [
                                 {
                                  "Value": "'$IP'"
