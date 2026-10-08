@@ -52,7 +52,7 @@ echo "Instance Name and ID : "$instance", "$INSTANCE_ID""
             "TTL": 1,
            "ResourceRecords": [
            {
-             "Value": "$IP"
+             "Value": "'$IP'"
             }
             ]
             }
