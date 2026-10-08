@@ -46,7 +46,7 @@ INSTANCE_ID=$( aws ec2 run-instances \
           "Changes": [ {
                         "Action": "UPSERT",
                         "ResourceRecordSet": {
-                        "Name":"$RECORD_NAME",
+                        "Name":"'$RECORD_NAME'",
                         "Type": "A",
                         "TTL": 60 ,
                         "ResourceRecords": [
