@@ -17,7 +17,7 @@ INSTANCE_ID=$( aws ec2 run-instances \
     --output text
 )
 
-echo "Instance Name and ID : " ā$instance" "$INSTANCE_ID"" 
+echo "Instance Name and ID : "$instance" "$INSTANCE_ID"" 
 
         if [ "$instance" == "frontend" ]; then
                     IP=$( aws ec2 describe-instances \
@@ -25,13 +25,40 @@ echo "Instance Name and ID : " ā$instance" "$INSTANCE_ID""
                     --query "Reservations[].Instances[].PublicIpAddress" \
                     --output text          
                     )
+                    
+            RECORD_NAME="$DOMAIN_NAME"     #shannu.online    
         else 
                 IP=$( aws ec2 describe-instances \
                 --instance-ids "$INSTANCE_ID" \
                 --query "Reservations[].Instances[].PrivateIpAddress" \
                 --output text
+
+             RECORD_NAME="$instance.$DOMAIN_NAME"    #mongodb.shannu.online
         ) 
         fi            
         echo "IP Address :$IP"
 
+
+          aws route53 change-resource-record-sets \
+         --hosted-zone-id "$ZONE_ID" \
+         --change-batch '
+        {
+          "Comment": "Updating DNS record",
+          "Changes": [ {
+          "Action": "UPSERT",
+           "ResourceRecordSet": {
+            "Name": "$RECORD_NAME",
+            "Type": "A",
+            "TTL": "1",
+           "ResourceRecords": [
+           {
+             "Value": "$IP"
+            }
+            ]
+            }
+            }
+            ]
+        }
+         '
+         echo "DNS Record Created for $instance : $RECORD_NAME -> $IP"
 done
