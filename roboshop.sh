@@ -41,24 +41,22 @@ echo "Instance Name and ID : "$instance", "$INSTANCE_ID""
 
           aws route53 change-resource-record-sets \
          --hosted-zone-id "$ZONE_ID" \
-         --change-batch '
-        {
+         --change-batch '{
           "Comment": "Updating DNS record",
           "Changes": [ {
-          "Action": "UPSERT",
-           "ResourceRecordSet": {
-            "Name": "$RECORD_NAME",
-            "Type": "A",
-            "TTL": 1,
-           "ResourceRecords": [
-           {
-             "Value": "$IP"
-            }
-            ]
-            }
-            }
-            ]
-        }
-         '
-         echo "DNS Record Created for $instance : "$RECORD_NAME" -> $IP"
+                        "Action": "UPSERT",
+                        "ResourceRecordSet": {
+                        "Name": "$RECORD_NAME",
+                        "Type": "A",
+                        "TTL": 1,
+                        "ResourceRecords": [
+                                {
+                                 "Value": "'$IP'"
+                        }
+                     ]
+                  }
+                }
+              ]
+            }'
+         echo "DNS Record Created for $instance : "$RECORD_NAME" -> "$IP""
 done
