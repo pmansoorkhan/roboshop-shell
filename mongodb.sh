@@ -49,3 +49,4 @@ systemctl restart mongod &>> "$LOG_FILE"
 VALIDATE "$?" "Restarted mongodb service"
 
 echo -e " ${G}MongoDB installation is completed successfully${N}" | tee -a "$LOG_FILE" 
+
