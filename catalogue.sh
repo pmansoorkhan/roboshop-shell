@@ -37,19 +37,18 @@ VALIDATE "$?" "Enabling the nodejs module"
 dnf install nodejs -y &>> "$LOG_FILE"
 VALIDATE "$?" "nodejs installation"
 
-useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop  &>> "$LOG_FILE"
 VALIDATE "$?" "Creating system user"
 
 mkdir -p /app  &>> "$LOG_FILE"
 VALIDATE "$?" "Creating app directory"
 
-curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip 
+curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip  &>> "$LOG_FILE"
 VALIDATE "$?" "Downloading catalogue zip file"
 
 cd /app   # Move to app directory
-unzip /tmp/catalogue.zip 
+unzip /tmp/catalogue.zip  &>> "$LOG_FILE"
 VALIDATE "$?" "Extracting catalogue zip file"
-
 
 cd /app  
 npm install  &>> "$LOG_FILE"
