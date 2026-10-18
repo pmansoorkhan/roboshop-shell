@@ -10,6 +10,7 @@ Y="\e[33m"
 N="\e[0m"
 B="\e[34m"
 SCRIPT_DIR="$PWD"
+MONGODB_HOST="mongodb.shannu.online"
 
 # Check root user
 if [ "$USER_ID" -ne 0 ]; then
@@ -64,7 +65,6 @@ VALIDATE "$?" "Extracting catalogue zip file"
 cd /app  
 VALIDATE "$?" "Moving back to app directory"
 
-
 npm install  &>> "$LOG_FILE"
 VALIDATE "$?" "Installing nodejs dependencies"
 
@@ -80,4 +80,12 @@ VALIDATE "$?" "Enabling catalogue service"
 systemctl start catalogue &>> "$LOG_FILE"
 VALIDATE "$?" "Starting catalogue service"
 
+cp /$SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo &>> "$LOG_FILE"
+VALIDATE "$?" "copying mongo repo file"
+
+dnf install mongodb-mongosh -y &>> "$LOG_FILE"
+VALIDATE "$?" "Installing mongodb shell"
+
+mongosh --host $MONGODB_HOST </app/db/master-data.js &>> "$LOG_FILE"
+VALIDATE "$?" "Loading master data into MongoDB"
 
