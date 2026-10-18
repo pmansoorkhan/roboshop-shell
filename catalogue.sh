@@ -62,8 +62,8 @@ VALIDATE "$?" "Removing old content from app directory"
 unzip /tmp/catalogue.zip  &>> "$LOG_FILE"
 VALIDATE "$?" "Extracting catalogue zip file"
 
-cd /app  
-VALIDATE "$?" "Moving back to app directory"
+# cd /app  
+# VALIDATE "$?" "Moving back to app directory"
 
 npm install  &>> "$LOG_FILE"
 VALIDATE "$?" "Installing nodejs dependencies"
@@ -86,8 +86,19 @@ VALIDATE "$?" "copying mongo repo file"
 dnf install mongodb-mongosh -y &>> "$LOG_FILE"
 VALIDATE "$?" "Installing mongodb shell"
 
-mongosh --host $MONGODB_HOST </app/db/master-data.js &>> "$LOG_FILE"
-VALIDATE "$?" "Loading master data into MongoDB"
+INDEX=$(mongosh --host $MONGODB_HOST --quiet --eval 'dbgetMongo().getDBNames().indexOf("catalogue")') | tee -a "$LOG_FILE"
+
+if [ "$INDEX" -le 0 ]; then 
+    mongosh --host $MONGODB_HOST </app/db/master-data.js &>> "$LOG_FILE"
+    VALIDATE "$?" "Loading catalogue products data into MongoDB"
+else
+ echo -e "${G}catalogue products already loaded${N}....${Y}Skipping${N}"  
+fi
+
+systemctl restart catalogue 
+VALIDATE "$?" "Restarted catalogue service"
+
+echo -e "${G}catalogue package installation is successfully completed${N} ... ${Y}Thanks you${N}"
 
 
 
