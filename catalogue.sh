@@ -54,13 +54,21 @@ VALIDATE "$?" "Downloading catalogue zip file"
 cd /app 
 VALIDATE "$?" "Moving to app directory"
 
+rm -rf /app/* &>> "$LOG_FILE"
+VALIDATE "$?" "Removing old content from app directory"
+
 unzip /tmp/catalogue.zip  &>> "$LOG_FILE"
 VALIDATE "$?" "Extracting catalogue zip file"
 
 cd /app  
 VALIDATE "$?" "Moving back to app directory"
+
+
 npm install  &>> "$LOG_FILE"
 VALIDATE "$?" "Installing nodejs dependencies"
+
+cp catalogue.service /etc/systemd/system/catalogue.service &>> "$LOG_FILE"
+VALIDATE "$?" "copying catalogue service file"
 
 systemctl daemon-reload &>> "$LOG_FILE"
 VALIDATE "$?" "Reloading systemd daemon service"
