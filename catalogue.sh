@@ -86,6 +86,6 @@ VALIDATE "$?" "copying mongo repo file"
 dnf install mongodb-mongosh -y &>> "$LOG_FILE"
 VALIDATE "$?" "Installing mongodb shell"
 
-mongosh --host $MONGODB_HOST </app/db/master-data.js &>> "$LOG_FILE"
+mongosh --host $MONGODB_HOST /app/db/master-data.js &>> "$LOG_FILE"
 VALIDATE "$?" "Loading master data into MongoDB"
 
