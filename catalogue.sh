@@ -9,6 +9,7 @@ G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
 B="\e[34m"
+SCRIPT_DIR="$PWD"
 
 # Check root user
 if [ "$USER_ID" -ne 0 ]; then
@@ -67,7 +68,7 @@ VALIDATE "$?" "Moving back to app directory"
 npm install  &>> "$LOG_FILE"
 VALIDATE "$?" "Installing nodejs dependencies"
 
-cp catalogue.service /etc/systemd/system/catalogue.service &>> "$LOG_FILE"
+cp /$SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service &>> "$LOG_FILE"
 VALIDATE "$?" "copying catalogue service file"
 
 systemctl daemon-reload &>> "$LOG_FILE"
