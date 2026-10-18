@@ -43,7 +43,7 @@ id roboshop &>> "$LOG_FILE"
         useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop  &>> "$LOG_FILE"
         VALIDATE "$?" "Creating system user"
     else
-        echo -e "${Y}roboshop user already exists${N}" | tee -a "$LOG_FILE"
+        echo -e "${Y}roboshop user already exists${N}....${B}Skipping user creation${N}" | tee -a "$LOG_FILE"
     fi
 mkdir -p /app  &>> "$LOG_FILE"
 VALIDATE "$?" "Creating app directory"
