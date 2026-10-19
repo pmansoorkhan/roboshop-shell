@@ -94,8 +94,8 @@ else
  echo -e "${G}catalogue products already loaded${N}....${Y}Skipping${N}"  
 fi
 
-systemctl restart catalogue 
-VALIDATE "$?" "Restarted catalogue service"
+# systemctl restart catalogue 
+# VALIDATE "$?" "Restarted catalogue service"
 
 echo -e "${G}catalogue package installation is successfully completed${N} ... ${Y}Thanks you${N}"
 
