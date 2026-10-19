@@ -88,25 +88,14 @@ VALIDATE "$?" "Installing mongodb shell"
 
 INDEX=$(mongosh --host "$MONGODB_HOST" --quiet --eval 'db.getMongo().getDBNames().indexOf("catalogue")')  | tee -a "$LOG_FILE"
 if [ "$INDEX" -le  0 ]; then 
-    mongosh --host MONGODB_HOST </app/db/master-data.js &>> "$LOG_FILE"
-    VALIDATE "$?" "Loading catalogue products data into MongoDB"
+    mongosh --host "$MONGODB_HOST" </app/db/master-data.js &>> "$LOG_FILE"
+    VALIDATE "$?" "Loading catalogue products"
 else
  echo -e "${G}catalogue products already loaded${N}....${Y}Skipping${N}"  
 fi
 
-# if [ -z "$INDEX" ]; then
-#     echo -e  "${B}INDEX is empty. MongoDB check failed${N}"
-# elif [ "$INDEX" -le 0 ]; then
-#     echo  -e "${Y}Loading catalogue data${N}"
-# else
-#     echo -e "${G}Catalogue products already loaded${N}...${Y}Skipping${N}"
-# fi
-
-# systemctl restart catalogue 
-# VALIDATE "$?" "Restarted catalogue service"
+systemctl restart catalogue 
+VALIDATE "$?" "Restarted catalogue service"
 
 echo -e "${G}catalogue package installation is successfully completed${N} ... ${Y}Thanks you${N}"
-
-
-
 
