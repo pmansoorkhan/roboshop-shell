@@ -9,7 +9,6 @@ G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
 B="\e[34m"
-MONGODB_HOST="mongodb.shannu.online"
 
 # Check root user
 if [ "$USER_ID" -ne 0 ]; then
