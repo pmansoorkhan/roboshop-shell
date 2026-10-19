@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SG_ID="sgr-0515f36f03caf18ab"
+SG_ID="sg-004646843127c8854"
 AMI_ID="ami-0220d79f3f480ecf5"
 ZONE_ID="Z01032422UQPZQPC0HZ2Q"
 DOMAIN_NAME="shannu.online"
