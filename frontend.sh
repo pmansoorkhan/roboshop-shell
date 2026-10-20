@@ -38,3 +38,17 @@ VALIDATE "$?" "Installing nginx"
 systemctl enable nginx 
 systemctl start nginx  &>>"$LOG_FILE"
 VALIDATE "$?" "Enabling & Starting nginx"
+
+rm -rf /usr/share/nginx/html/* 
+VALIDATE "$?" "Removing the default content"
+
+curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
+VALIDATE "$?" "Download the frontend content"
+
+cd /usr/share/nginx/html 
+unzip /tmp/frontend.zip
+VALIDATE "$?" "Moving  and unzipping frontend code"
+
+
+
+
