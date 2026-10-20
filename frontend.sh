@@ -10,32 +10,31 @@ B="\e[34m"
 N="\e[0m"
 
 if [ "$USER_ID" -ne 0 ]; then
-    echo -e "${R}Please run the script with root user${N}"
+    echo -e "${R}Please run the script with root user${N}" | tee -a "$LOG_FILE"
     exit 1
 fi
 mkdir -p "$LOG_FOLDER" 
 
 VALIDATE(){
 if [ "$1" -ne 0  ]; then
-    echo -e "$2 ........ is ${R}failed${N}"
+    echo -e "$2 ........ is ${R}failed${N}" | tee -a "$LOG_FILE"
 else 
-    echo -e "$2 ..... is ${G}successful${N}"
+    echo -e "$2 ..... is ${G}successful${N}" | tee -a "$LOG_FILE"
 fi
 }
 
-dnf module list nginx -y
+dnf module list nginx -y &>> "$LOG_FILE"
 VALIDATE "$?" "checking the list of modules"
 
-dnf module disable nginx -y
+dnf module disable nginx -y &>> "$LOG_FILE"
 VALIDATE "$?" "Disabling all modules"
 
-dnf module enable nginx:1.24 -y
+dnf module enable nginx:1.24 -y &>> "$LOG_FILE"
 VALIDATE "$?" "Enabling the required module"
 
-dnf install nginx -y
+dnf install nginx -y  | tee -a "$LOG_FILE"
 VALIDATE "$?" "Installing nginx"
 
 systemctl enable nginx 
-systemctl start nginx
+systemctl start nginx  &>>"$LOG_FILE"
 VALIDATE "$?" "Enabling & Starting nginx"
-
