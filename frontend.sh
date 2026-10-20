@@ -8,6 +8,7 @@ G="\e[32m"
 Y="\e[33m"
 B="\e[34m"
 N="\e[0m"
+SCRIPT_DIR="$PWD"
 
 if [ "$USER_ID" -ne 0 ]; then
     echo -e "${R}Please run the script with root user${N}" | tee -a "$LOG_FILE"
@@ -50,5 +51,12 @@ unzip /tmp/frontend.zip
 VALIDATE "$?" "Moving  and unzipping frontend code"
 
 
+cp $SCRIPT_DIR/nginx.conf /etc/nginx/nginx.conf
+VALIDATE "$?" "copying the config file to nginx location"
+
+systemctl restart nginx
+VALIDATE "$?" "Restarted nginx application"
+
+echo -e "${G}Frontend server is ready to access via internet${N}" 
 
 
