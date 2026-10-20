@@ -54,9 +54,9 @@ VALIDATE "$?" "Moving  and unzipping frontend code"
 cp $SCRIPT_DIR/nginx.conf /etc/nginx/nginx.conf
 VALIDATE "$?" "copying the config file to nginx location"
 
-systemctl restart nginx
+systemctl restart nginx  &>>"$LOG_FILE" 
 VALIDATE "$?" "Restarted nginx application"
 
-echo -e "${G}Frontend server is ready to access via internet${N}" 
+echo -e "${G}Frontend server is ready to access via internet${N}" | tee -a "$LOG_FILE"
 
 
