@@ -86,13 +86,11 @@ if [ "$INDEX" -le  0 ]; then
     mongosh --host "$MONGODB_HOST" </app/db/master-data.js &>> "$LOG_FILE"
     VALIDATE "$?" "Loading catalogue products"
 else
- echo -e "${G}catalogue products already loaded${N}....${Y}Skipping${N}"  
+ echo -e "${G}catalogue products already loaded${N}......${Y}Skipping${N}"  
 fi
-
 systemctl restart catalogue 
 VALIDATE "$?" "Restarted catalogue service"
 echo -e "${G}catalogue package installation is successfully completed${N} ... ${Y}Thanks you${N}"
-
 
 
 # #!/bin/bash
