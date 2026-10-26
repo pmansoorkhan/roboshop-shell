@@ -50,7 +50,7 @@ cd /usr/share/nginx/html
 unzip /tmp/frontend.zip
 VALIDATE "$?" "Moving  and unzipping frontend code"
 
-
+rm -rf /etc/nginx/nginx.conf
 cp $SCRIPT_DIR/nginx.conf /etc/nginx/nginx.conf
 VALIDATE "$?" "copying the config file to nginx location"
 
