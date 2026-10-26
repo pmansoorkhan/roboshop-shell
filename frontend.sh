@@ -9,6 +9,7 @@ Y="\e[33m"
 B="\e[34m"
 N="\e[0m"
 SCRIPT_DIR="$PWD"
+MONGODB_HOST="mongodb.shannu.online"
 
 if [ "$USER_ID" -ne 0 ]; then
     echo -e "${R}Please run the script with root user${N}" | tee -a "$LOG_FILE"
