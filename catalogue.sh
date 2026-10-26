@@ -10,7 +10,7 @@ Y="\e[33m"
 N="\e[0m"
 B="\e[34m"
 SCRIPT_DIR="$PWD"
-MONGODB_HOST="mongodb.shannu.online"
+MONGODB_HOST=mongodb.shannu.online
 
 # Check root user
 if [ "$USER_ID" -ne 0 ]; then
