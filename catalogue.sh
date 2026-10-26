@@ -81,7 +81,7 @@ VALIDATE "$?" "copying mongo repo file"
 dnf install mongodb-mongosh -y &>> "$LOG_FILE"
 VALIDATE "$?" "Installing mongodb shell"
 
-INDEX=$(mongosh --host "$MONGODB_HOST" --quiet --eval 'db.getMongo().getDBNames().indexOf("catalogue")')  | tee -a "$LOG_FILE"
+INDEX=$(mongosh --host "$MONGODB_HOST:27017" --quiet --eval 'db.getMongo().getDBNames().indexOf("catalogue")')  | tee -a "$LOG_FILE"
 #INDEX=$(mongosh --host "mongodb.shannu.online:27017" --quiet --eval 'db.getMongo().getDBNames().indexOf("catalogue")')
 if [ "$INDEX" -le  0 ]; then 
     mongosh --host "$MONGODB_HOST" </app/db/master-data.js &>> "$LOG_FILE"
