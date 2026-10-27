@@ -35,4 +35,3 @@ VALIDATE "$?" "Enabling & Starting MYSql service"
 
 mysql_secure_installation --set-root-pass RoboShop@1
 VALIDATE "$?" "Setting Root Credentials"
-
