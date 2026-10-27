@@ -69,4 +69,5 @@ systemctl enable user    &>> "$LOG_FILE"
 systemctl start user     &>> "$LOG_FILE"
 VALIDATE "$?" "Enabling & Starting USER service"
 
-echo -e " ${G} USER installation is completed successfully ${N}" | tee -a "$LOG_FILE"
+
+echo -e "${G} USER installation is completed successfully ${N}" | tee -a "$LOG_FILE"
