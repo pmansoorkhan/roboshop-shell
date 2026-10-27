@@ -12,7 +12,7 @@ N="\e[0m"
 SCRIPT_DIR=$PWD
 
 if [ "$USER_ID" -ne 0 ]; then
-  echo -e "${R} Please run the script with root id ${N}" | tee -a "$LOG_FILE"
+  echo -e "${R} Please run the script with root id ${N}" 
   exit 1
 fi
 mkdir -p "LOG_FOLDER"  &>> "$LOG_FILE"
