@@ -3,20 +3,20 @@ USER_ID=$(id -u)
 LOG_FOLDER="/var/log/roboshop-shell"
 SCRIPT_NAME=$(basename "$0")
 LOG_FILE="$LOG_FOLDER/$SCRIPT_NAME.log"
+SCRIPT_DIR=$PWD
 
 R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
 B="\e[34m"
 N="\e[0m"
-SCRIPT_DIR=$PWD
 
 if [ "$USER_ID" -ne 0 ]; then
   echo -e "${R} Please run the script with root id ${N}" 
   exit 1
 fi
-mkdir -p "$LOG_FOLDER"  &>> "$LOG_FILE"
 
+mkdir -p "$LOG_FOLDER"  &>> "$LOG_FILE"
 VALIDATE() {
 if [ "$1" -ne 0 ]; then 
     echo -e "$2 ..... ${R} Failed ${N}"  | tee -a "$LOG_FILE"
@@ -26,9 +26,11 @@ else
 fi
 }
 
-dnf module disable nodejs -y   &>> "$LOG_FILE"
-dnf module enable nodejs:20 -y   &>> "$LOG_FILE"
-VALIDATE "$?" "Disabling & Enabling NODEJS"
+dnf module disable nodejs  -y   &>> "$LOG_FILE"
+VALIDATE "$?" "Disabling NODEJS"
+
+dnf module enable nodejs:20  -y   &>> "$LOG_FILE"
+VALIDATE "$?" "Enabling NODEJS"
 
 dnf install nodejs -y  &>> "$LOG_FILE"
 VALIDATE "$?" "Installing NODEJS"
