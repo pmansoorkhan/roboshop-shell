@@ -10,6 +10,7 @@ Y="\e[33m"
 B="\e[34m"
 N="\e[0m"
 SCRIPT_DIR=$PWD
+MYSQL_HOST=mysql.shannu.online
 
 if [ "$USER_ID" -ne 0 ]; then
   echo -e "${R} Please run the script with root id ${N}" 
@@ -60,7 +61,22 @@ mv target/shipping-1.0.jar shipping.jar  &>> "$LOG_FILE"
 VALIDATE "$?" "Renaming file name"
 
 cp "$SCRIPT_DIR/shipping.service" /etc/systemd/system/shipping.service  &>> "$LOG_FILE"
+VALIDATE "$?" "Copying SHIPPING Service"
 
+dnf install mysql -y  &>> "$LOG_FILE" 
+VALIDATE "$?" "Installing MYSQL"
+
+
+mysql -h $MYSQL_HOST -uroot -pRoboShop@1 -e 'use cities'
+if [ "$?" -ne 0 ]; then
+     mysql -h "$MYSQL_HOST" -uroot -pRoboShop@1 < /app/db/schema.sql
+     mysql -h "$MYSQL_HOST" -uroot -pRoboShop@1 < /app/db/app-user.sql 
+     mysql -h "$MYSQL_HOST" -uroot -pRoboShop@1 < /app/db/master-data.sql
+     VALIDATE "$?" "Loading data into MYSQL"
+else 
+    echo -e "${G} Data is already loaded ${N} .....${Y} Skipping ${N}"
+fi
+    
 systemctl daemon-reload &>> "$LOG_FILE" 
 VALIDATE "$?" "Reloading SHIPPING service"
 
