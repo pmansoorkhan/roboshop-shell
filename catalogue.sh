@@ -3,7 +3,6 @@ USER_ID=$(id -u)
 LOG_FOLDER="/var/log/roboshop-shell"
 SCRIPT_NAME=$(basename "$0")
 LOG_FILE="$LOG_FOLDER/$SCRIPT_NAME.log"
-
 R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
@@ -14,10 +13,11 @@ MONGODB_HOST=mongodb.shannu.online
 
 # Check root user
 if [ "$USER_ID" -ne 0 ]; then
-    echo -e "${R}Please run the script as root user${N}"
+    echo -e "${R}Please run the script as root user${N}" | tee -a "$LOG_FILE"
     exit 1
 fi
-mkdir -p "$LOG_FOLDER"     # Create log directory
+mkdir -p "$LOG_FOLDER"  
+
 VALIDATE() {
     if [ "$1" -ne 0 ]; then
         echo -e "$2 .... is ${R}failed${N}" | tee -a "$LOG_FILE"
@@ -28,17 +28,16 @@ VALIDATE() {
 }
 
 dnf module list nodejs &>> "$LOG_FILE"
-VALIDATE "$?" "checking nodejs module list"
+VALIDATE "$?" "checking NODEJS module list"
 
 dnf module  disable nodejs -y &>> "$LOG_FILE"
-VALIDATE "$?" "disabling the nodejs module"
+VALIDATE "$?" "disabling the NODEJS module"
 
 dnf module enable nodejs:20 -y &>> "$LOG_FILE"
-VALIDATE "$?" "Enabling the nodejs module"
+VALIDATE "$?" "Enabling the NODEJS module"
 
 dnf install nodejs -y &>> "$LOG_FILE"
-VALIDATE "$?" "nodejs installation"
-
+VALIDATE "$?" "Installing NODEJS"
 
 id roboshop &>> "$LOG_FILE"
     if [ "$?" -ne 0 ]; then
@@ -57,7 +56,7 @@ cd /app
 VALIDATE "$?" "Moving to app directory"
 
 rm -rf /app/* &>> "$LOG_FILE"
-VALIDATE "$?" "Removing old content from app directory"
+VALIDATE "$?" "Removing existing content from app directory"
 
 unzip /tmp/catalogue.zip  &>> "$LOG_FILE"
 VALIDATE "$?" "Extracting catalogue zip file"
@@ -65,7 +64,7 @@ VALIDATE "$?" "Extracting catalogue zip file"
 npm install  &>> "$LOG_FILE"
 VALIDATE "$?" "Installing nodejs dependencies"
 
-cp /$SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service &>> "$LOG_FILE"
+cp "$SCRIPT_DIR/catalogue.service"  /etc/systemd/system/catalogue.service &>> "$LOG_FILE"
 VALIDATE "$?" "copying catalogue service file"
 
 systemctl daemon-reload &>> "$LOG_FILE"
@@ -75,13 +74,15 @@ systemctl enable catalogue  &>> "$LOG_FILE"
 systemctl start catalogue &>> "$LOG_FILE"
 VALIDATE "$?" "Enabling & Starting catalogue service"
 
-cp /$SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo &>> "$LOG_FILE"
+cp "$SCRIPT_DIR/mongo.repo"  /etc/yum.repos.d/mongo.repo &>> "$LOG_FILE"
 VALIDATE "$?" "copying mongo repo file"
 
 dnf install mongodb-mongosh -y &>> "$LOG_FILE"
 VALIDATE "$?" "Installing mongodb shell"
 
-INDEX=$(mongosh --host "$MONGODB_HOST:27017" --quiet --eval 'db.getMongo().getDBNames().indexOf("catalogue")')  | tee -a "$LOG_FILE"
+INDEX=$(mongosh --host $MONGODB_HOST --quiet  --eval 'db.getMongo().getDBNames().indexOf("catalogue")')
+
+#INDEX=$(mongosh --host "$MONGODB_HOST:27017" --quiet --eval 'db.getMongo().getDBNames().indexOf("catalogue")')  | tee -a "$LOG_FILE"
 #INDEX=$(mongosh --host "mongodb.shannu.online:27017" --quiet --eval 'db.getMongo().getDBNames().indexOf("catalogue")')
 if [ "$INDEX" -le  0 ]; then 
     mongosh --host "$MONGODB_HOST" </app/db/master-data.js &>> "$LOG_FILE"
@@ -89,9 +90,10 @@ if [ "$INDEX" -le  0 ]; then
 else
  echo -e "${G}catalogue products already loaded${N}......${Y}Skipping${N}"  
 fi
-systemctl restart catalogue 
+
+systemctl restart catalogue  &>> "$LOG_FILE"
 VALIDATE "$?" "Restarted catalogue service"
-echo -e "${G}catalogue package installation is successfully completed${N} ... ${Y}Thanks you${N}"
+
 
 
 # #!/bin/bash
