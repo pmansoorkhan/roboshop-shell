@@ -65,5 +65,5 @@ systemctl daemon-reload &>> "$LOG_FILE"
 VALIDATE "$?" "Reloading SHIPPING service"
 
 systemctl enable shipping  &>> "$LOG_FILE"
-systemctl start shipping
+systemctl start shipping   &>> "$LOG_FILE"
 VALIDATE "$?" "Enabling & Starting SHIPING Service"
