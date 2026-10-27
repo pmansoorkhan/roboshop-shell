@@ -3,7 +3,6 @@ USER_ID=$(id -u)
 LOG_FOLDER="/var/log/roboshop-shell"
 SCRIPT_NAME=$(basename "$0")
 LOG_FILE="$LOG_FOLDER/$SCRIPT_NAME.log"
-
 R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
@@ -66,6 +65,5 @@ systemctl daemon-reload  &>> "$LOG_FILE"
 systemctl enable user    &>> "$LOG_FILE"
 systemctl start user     &>> "$LOG_FILE"
 VALIDATE "$?" "Enabling & Starting USER service"
-
 
 echo -e "${G} USER installation is completed successfully ${N}" | tee -a "$LOG_FILE"
