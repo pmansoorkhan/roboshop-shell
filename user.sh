@@ -15,7 +15,7 @@ if [ "$USER_ID" -ne 0 ]; then
   echo -e "${R} Please run the script with root id ${N}" | tee -a "$LOG_FILE"
   exit 1
 fi
-mkdir -p "$LOG_FOLDER"  &>> "$LOG_FILE"
+mkdir -p"$LOG_FOLDER"  &>> "$LOG_FILE"
 VALIDATE() {
 if [ "$1" -ne 0 ]; then 
     echo -e "$2 ..... ${R} Failed ${N}"  | tee -a "$LOG_FILE"
