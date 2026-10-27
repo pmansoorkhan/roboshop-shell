@@ -20,6 +20,7 @@ mkdir -p "$LOG_FOLDER"
 VALIDATE(){
 if [ "$1" -ne 0  ]; then
     echo -e "$2 ........ is ${R}failed${N}" | tee -a "$LOG_FILE"
+    exit 1
 else 
     echo -e "$2 ..... is ${G}successful${N}" | tee -a "$LOG_FILE"
 fi
@@ -37,27 +38,65 @@ VALIDATE "$?" "Enabling the required module"
 dnf install nginx -y  | tee -a "$LOG_FILE"
 VALIDATE "$?" "Installing nginx"
 
-systemctl enable nginx 
-systemctl start nginx  &>>"$LOG_FILE"
+systemctl enable nginx  &>> "$LOG_FILE"
+systemctl start nginx  &>> "$LOG_FILE"
 VALIDATE "$?" "Enabling & Starting nginx"
 
 rm -rf /usr/share/nginx/html/* 
-VALIDATE "$?" "Removing the default content"
+VALIDATE $? "Remove default content"
 
-curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
-VALIDATE "$?" "Download the frontend content"
+curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip &>> "$LOG_FILE"
+VALIDATE "$?" "Downloading Frontend zip file"
 
 cd /usr/share/nginx/html 
-unzip /tmp/frontend.zip
-VALIDATE "$?" "Moving  and unzipping frontend code"
+unzip /tmp/frontend.zip  &>> "$LOG_FILE"
+VALIDATE $? "Downloading  and unzipping frontend"
 
-rm -rf /etc/nginx/nginx.conf
-cp $SCRIPT_DIR/nginx.conf /etc/nginx/nginx.conf
-VALIDATE "$?" "copying the config file to nginx location"
+rm -rf /etc/nginx/nginx.conf  &>> "$LOG_FILE"
+VALIDATE $? "Remove default content"
 
-systemctl restart nginx  &>>"$LOG_FILE" 
-VALIDATE "$?" "Restarted nginx application"
+cp "$SCRIPT_DIR/nginx.conf"  /etc/nginx/nginx.conf  &>> "$LOG_FILE"
+VALIDATE $? "Copying  our nginx conf file"
 
-echo -e "${G}Frontend server is ready to access via internet${N}" | tee -a "$LOG_FILE"
+systemctl restart nginx &>> "$LOG_FILE"
+VALIDATE $? "Restarted Nginx"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ####################################
+# rm -rf /usr/share/nginx/html/* 
+# VALIDATE "$?" "Removing the default content"
+
+# curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
+# VALIDATE "$?" "Download the frontend content"
+
+# cd /usr/share/nginx/html 
+# unzip /tmp/frontend.zip
+# VALIDATE "$?" "Moving  and unzipping frontend code"
+
+# rm -rf /etc/nginx/nginx.conf
+# cp $SCRIPT_DIR/nginx.conf /etc/nginx/nginx.conf
+# VALIDATE "$?" "copying the config file to nginx location"
+
+# systemctl restart nginx  &>>"$LOG_FILE" 
+# VALIDATE "$?" "Restarted nginx application"
+
+# echo -e "${G}Frontend server is ready to access via internet${N}" | tee -a "$LOG_FILE"
 
 
