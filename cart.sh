@@ -12,27 +12,28 @@ B="\e[34m"
 N="\e[0m"  
 SCRIPT_DIR=$PWD
 
-mkdir -p "$LOG_FOLDER"
 
 if [ "$USER_ID" -ne  0 ]; then 
    echo -e "${R} Please run the script with root access ${N}"
    exit 1
 fi  
 
+mkdir -p "$LOG_FOLDER"
+
 VALIDATE(){
  if [ "$1" -ne 0 ]; then
     echo -e "$2 is ....... ${R} failed ${N}" | tee -a "$LOG_FILE"
+    exit 1
  else 
     echo -e "$2 is ..... ${G} successful ${N}" | tee -a "$LOG_FILE"
  fi
 }
 
-
 dnf module disable nodejs  -y   &>> "$LOG_FILE"
-VALIDATE "$?" "Disabling NODEJS"
+VALIDATE "$?" "Disabling NODEJS default version"
 
 dnf module enable nodejs:20  -y   &>> "$LOG_FILE"
-VALIDATE "$?" "Enabling NODEJS"
+VALIDATE "$?" "Enabling NODEJS:20 version"
 
 dnf install nodejs -y  &>> "$LOG_FILE"
 VALIDATE "$?" "Installing NODEJS"
@@ -66,11 +67,9 @@ VALIDATE "$?" "Installing NODEJS dependencies"
 cp "$SCRIPT_DIR/cart.service"  /etc/systemd/system/cart.service
 VALIDATE "$?" "Copying CART service file"
 
-systemctl daemon-reload
+systemctl daemon-reload  &>> "$LOG_FILE"
 VALIDATE "$?" "Reloading CART service"
 
-systemctl enable cart 
-systemctl start cart
+systemctl enable cart &>> "$LOG_FILE"
+systemctl start cart  &>> "$LOG_FILE"
 VALIDATE "$?" "Enabling & Starting service"
-
-
