@@ -11,7 +11,7 @@ Y="\e[33m"
 B="\e[34m"
 N="\e[0m"  
 SCRIPT_DIR=$PWD
-
+MONGODB_HOST=mongodb.shannu.online
 
 if [ "$USER_ID" -ne  0 ]; then 
    echo -e "${R} Please run the script with root access ${N}"
@@ -72,4 +72,4 @@ VALIDATE "$?" "Reloading CART service"
 
 systemctl enable cart &>> "$LOG_FILE"
 systemctl start cart  &>> "$LOG_FILE"
-VALIDATE "$?" "Enabling & Starting service"
+VALIDATE "$?" "Enabling & Starting service" 
