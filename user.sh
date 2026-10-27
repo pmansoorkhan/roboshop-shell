@@ -1,9 +1,8 @@
 #!/bin/bash
-
 USER_ID=$(id -u)
 LOG_FOLDER="/var/log/roboshop-shell"
 SCRIPT_NAME=$(basename "$0")
-LOG_FILE="$LOG_FOLDER/$SCRIPT_NAME.log
+LOG_FILE="$LOG_FOLDER/$SCRIPT_NAME.log"
 
 R="\e[31m"
 G="\e[32m"
