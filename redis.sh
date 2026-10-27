@@ -33,7 +33,7 @@ VALIDATE "$?" "Disabling and Enabling the Redis version"
 dnf install redis -y  &>> "$LOG_FILE"
 VALIDATE "$?" "Installing Redis"
 
-sed -i "s/127.0.0.0/0.0.0.0/g"  -e " /protected-mode/ c protected-mode no" /etc/redis/redis.conf
+sed -i -e "s/127.0.0.0/0.0.0.0/g"  -e " /protected-mode/ c protected-mode no" /etc/redis/redis.conf
 VALIDATE "$?" "Changing the config"
 
 systemctl enable redis  &>> "$LOG_FILE"
@@ -41,7 +41,3 @@ systemctl start redis
 VALIDATE "$?" "Enabling & Staerted Redis"
 
 echo -e " ${G} Redis installation is completed successfully ${N}" | tee -a "$LOG_FILE" 
-
-
-
-
