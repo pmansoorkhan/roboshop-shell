@@ -11,7 +11,6 @@ B="\e[34m"
 SCRIPT_DIR="$PWD"
 MONGODB_HOST=mongodb.shannu.online
 
-# Check root user
 if [ "$USER_ID" -ne 0 ]; then
     echo -e "${R}Please run the script as root user${N}" | tee -a "$LOG_FILE"
     exit 1
