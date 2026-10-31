@@ -9,7 +9,6 @@ Y="\e[33m"
 B="\e[34m"
 N="\e[0m"
 SCRIPT_DIR="$PWD"
-MONGODB_HOST="mongodb.shannu.online"
 START_TIME="$(date +%s)"
 mkdir -p "$LOG_FOLDER"     # Create log directory
 echo "$(date "+%Y-%m-%d %H:%M:%S")  | Script started executing at:$(date)"  | tee -a "$LOG_FILE" 
