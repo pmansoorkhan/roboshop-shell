@@ -1,6 +1,5 @@
 #!/bin/bash
 
-#SG_ID="sg-0d30c826371107d41"
 SG_ID="sg-046c1f5818bea5c05"
 AMI_ID="ami-0055977a6e828a4f4"
 ZONE_ID="Z01032422UQPZQPC0HZ2Q"
@@ -16,8 +15,7 @@ INSTANCE_ID=$( aws ec2 run-instances \
     --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$instance}]" \
     --query 'Instances[0].InstanceId' \
     --output text
-)
-
+      )
 # echo "Instance Name and ID : "$instance", "$INSTANCE_ID"" 
 
         if [ "$instance" == "frontend" ]; then
@@ -60,6 +58,6 @@ INSTANCE_ID=$( aws ec2 run-instances \
               ]
             }'
         
-         echo "Instance Name and Record : "$instance"-> "$RECORD_NAME"  "$IP""
-         
+         echo "Instance Name Record & IP : "$instance"-> "$RECORD_NAME"  "$IP""
+        
 done
