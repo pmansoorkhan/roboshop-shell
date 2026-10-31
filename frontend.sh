@@ -37,7 +37,7 @@ VALIDATE "$?" "Disabling all modules"
 dnf module enable nginx:1.24 -y &>> "$LOG_FILE"
 VALIDATE "$?" "Enabling the required module"
 
-dnf install nginx -y  | tee -a "$LOG_FILE"
+dnf install nginx -y  &>> "$LOG_FILE"
 VALIDATE "$?" "Installing nginx"
 
 systemctl enable nginx  &>> "$LOG_FILE"
