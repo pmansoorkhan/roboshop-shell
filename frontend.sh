@@ -9,21 +9,23 @@ Y="\e[33m"
 B="\e[34m"
 N="\e[0m"
 SCRIPT_DIR="$PWD"
-MONGODB_HOST="mongodb.shannu.online"
+#MONGODB_HOST="mongodb.shannu.online"
+START_TIME="$(date +%s)"
+mkdir -p "$LOG_FOLDER"     # Create log directory
+echo "$(date "+%Y-%m-%d %H:%M:%S")  | Script started executing at:$(date)"  | tee -a "$LOG_FILE" 
 
 if [ "$USER_ID" -ne 0 ]; then
-    echo -e "${R}Please run the script with root user${N}" | tee -a "$LOG_FILE"
+    echo -e " $(date "+%Y-%m-%d %H:%M:%S")  | ${R} Please run the script as root user ${N}"
     exit 1
 fi
-mkdir -p "$LOG_FOLDER" 
 
-VALIDATE(){
-if [ "$1" -ne 0  ]; then
-    echo -e "$2 ........ is ${R}failed${N}" | tee -a "$LOG_FILE"
-    exit 1
-else 
-    echo -e "$2 ..... is ${G}successful${N}" | tee -a "$LOG_FILE"
-fi
+VALIDATE() {
+    if [ "$1" -ne 0 ]; then
+        echo -e "$(date "+%Y-%m-%d %H:%M:%S")  | $2 .... ${R} failed ${N}" | tee -a "$LOG_FILE"
+        exit 1
+    else
+        echo -e "$(date "+%Y-%m-%d %H:%M:%S")  | $2 ...... ${G} successful ${N}" | tee -a "$LOG_FILE"
+    fi
 }
 
 dnf module list nginx -y &>> "$LOG_FILE"
@@ -60,3 +62,11 @@ VALIDATE $? "Copying  our nginx conf file"
 
 systemctl restart nginx &>> "$LOG_FILE"
 VALIDATE $? "Restarted Nginx"
+
+print_total_time(){
+    END_TIME="$(date +%s)"
+    TOTAL_TIME=$(( "$END_TIME" - "$START_TIME" ))
+    echo -e "$(date "+%Y-%m-%d %H:%M:%S")  | Script executed in :"${G} $TOTAL_TIME" seconds ${N}"  | tee -a "$LOG_FILE"
+}
+
+print_total_time
