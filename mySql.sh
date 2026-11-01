@@ -3,6 +3,7 @@ USER_ID=$(id -u)
 LOG_FOLDER="/var/log/roboshop-shell"
 SCRIPT_NAME=$(basename "$0")
 LOG_FILE="$LOG_FOLDER/$SCRIPT_NAME.log"
+MYSQL_ROOT_PASSWORD="RoboShop@1"
 
 R="\e[31m"
 G="\e[32m"
@@ -33,5 +34,7 @@ systemctl enable mysqld &>> "$LOG_FILE"
 systemctl start mysqld  &>> "$LOG_FILE"
 VALIDATE "$?" "Enabling & Starting MYSql service"
 
-mysql_secure_installation --set-root-pass RoboShop@1 &>> "$LOG_FILE"
+
+mysql_secure_installation --set-root-pass "$MYSQL_ROOT_PASSWORD"
+#mysql_secure_installation --set-root-pass RoboShop@1 &>> "$LOG_FILE"
 VALIDATE "$?" "Setting Root Credentials"
