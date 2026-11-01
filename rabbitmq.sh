@@ -15,7 +15,6 @@ Y="\e[33m"
 B="\e[34m"
 N="\e[0m"
 
-
 if [ "$USER_ID" -ne 0 ]; then
     echo -e " $(date "+%Y-%m-%d %H:%M:%S")  | ${R} Please run the script as root user ${N}"
     exit 1

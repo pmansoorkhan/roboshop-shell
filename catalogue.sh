@@ -43,7 +43,7 @@ VALIDATE "$?" "Installing NODEJS"
 
 id roboshop &>> "$LOG_FILE"
     if [ "$?" -ne 0 ]; then
-        useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop  &>> "$LOG_FILE"
+        useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop  | tee -a "$LOG_FILE"
         VALIDATE "$?" "Creating system user"
     else
         echo -e " $(date "+%Y-%m-%d %H:%M:%S")  | ${Y}roboshop user already exists${N}....${B}Skipping user creation${N}" | tee -a "$LOG_FILE"
