@@ -42,7 +42,7 @@ VALIDATE "$?" "Changing the config"
 
 systemctl enable redis  &>> "$LOG_FILE"
 systemctl start redis
-VALIDATE "$?" "Enabling & Staerted Redis"
+VALIDATE "$?" "Enabling & Started Redis"
 
 print_total_time(){
     END_TIME="$(date +%s)"
