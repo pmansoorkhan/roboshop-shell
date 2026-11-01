@@ -3,29 +3,31 @@ USER_ID=$(id -u)
 LOG_FOLDER="/var/log/roboshop-shell"
 SCRIPT_NAME=$(basename "$0")
 LOG_FILE="$LOG_FOLDER/$SCRIPT_NAME.log"
-
 R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
 B="\e[34m"
 N="\e[0m"
-SCRIPT_DIR=$PWD
 MYSQL_HOST=mysql.shannu.online
+SCRIPT_DIR=$PWD
+START_TIME="$(date +%s)"
+mkdir -p "$LOG_FOLDER"     # Create log directory
+echo "$(date "+%Y-%m-%d %H:%M:%S")  | Script started executing at:$(date)"  | tee -a "$LOG_FILE"
 
 if [ "$USER_ID" -ne 0 ]; then
-  echo -e "${R} Please run the script with root id ${N}" 
-  exit 1
+    echo -e " $(date "+%Y-%m-%d %H:%M:%S")  | ${R} Please run the script as root user ${N}"
+    exit 1
 fi
 
-mkdir -p "$LOG_FOLDER" 
 VALIDATE() {
-    if [ "$1" -ne 0 ]; then 
-        echo -e "$2 ..... ${R} Failed ${N}"  | tee -a "$LOG_FILE"
+    if [ "$1" -ne 0 ]; then
+        echo -e "$(date "+%Y-%m-%d %H:%M:%S")  | $2 .... ${R} failed ${N}" | tee -a "$LOG_FILE"
         exit 1
-    else 
-        echo -e "$2 .... ${G} Successful ${N}"  | tee -a "$LOG_FILE"
+    else
+        echo -e "$(date "+%Y-%m-%d %H:%M:%S")  | $2 ...... ${G} successful ${N}" | tee -a "$LOG_FILE"
     fi
 }
+
 
 dnf install maven -y  &>> "$LOG_FILE"
 VALIDATE "$?" "INstalling Maven package"
@@ -83,3 +85,11 @@ VALIDATE "$?" "Reloading SHIPPING service"
 systemctl enable shipping  &>> "$LOG_FILE"
 systemctl start shipping   &>> "$LOG_FILE"
 VALIDATE "$?" "Enabling & Starting SHIPING Service"
+
+print_total_time(){
+    END_TIME="$(date +%s)"
+    TOTAL_TIME=$(( "$END_TIME" - "$START_TIME" ))
+    echo -e "$(date "+%Y-%m-%d %H:%M:%S")  | Script executed in :"${G} $TOTAL_TIME" seconds ${N}"  | tee -a "$LOG_FILE"
+}
+
+print_total_time
