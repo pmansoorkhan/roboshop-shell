@@ -35,18 +35,9 @@ systemctl enable mysqld &>> "$LOG_FILE"
 systemctl start mysqld  &>> "$LOG_FILE"
 VALIDATE "$?" "Enabling & Starting MYSql service"
 
-#mysql_secure_installation --set-root-pass "$MYSQL_ROOT_PASSWORD"
+mysql_secure_installation --set-root-pass "$MYSQL_ROOT_PASSWORD"
 #mysql_secure_installation --set-root-pass RoboShop@1 &>> "$LOG_FILE"
 VALIDATE "$?" "Setting Root Credentials"
-
-if mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "SELECT 1;" &>/dev/null; then
-    echo "MySQL root password is already configured"
-else
-    mysql_secure_installation --set-root-pass "$MYSQL_ROOT_PASSWORD"
-    VALIDATE $? "Setting MySQL root password"
-fi
-
-
 
 print_total_time(){
     END_TIME="$(date +%s)"
