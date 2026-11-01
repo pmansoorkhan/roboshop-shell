@@ -3,6 +3,8 @@ USER_ID=$(id -u)
 LOG_FOLDER="/var/log/roboshop-shell"
 SCRIPT_NAME=$(basename "$0")
 LOG_FILE="$LOG_FOLDER/$SCRIPT_NAME.log"
+RABBITMQ_USER="roboshop"
+RABBITMQ_PASSWORD="roboshop123"
 SCRIPT_DIR=$PWD
 START_TIME="$(date +%s)"
 mkdir -p "$LOG_FOLDER"     # Create log directory
@@ -38,8 +40,11 @@ systemctl enable rabbitmq-server  &>> "$LOG_FILE"
 systemctl start rabbitmq-server   &>> "$LOG_FILE"
 VALIDATE "$?" "Enabling & Starting RAbbitMQ service"
 
-rabbitmqctl add_user roboshop roboshop123   &>> "$LOG_FILE"
-rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"   &>> "$LOG_FILE"
+
+rabbitmqctl add_user "$RABBITMQ_USER" "$RABBITMQ_PASSWORD" &>> "$LOG_FILE"
+rabbitmqctl set_permissions -p / "$RABBITMQ_USER" ".*" ".*" ".*" &>> "$LOG_FILE"
+#rabbitmqctl add_user roboshop roboshop123   &>> "$LOG_FILE"
+#rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"   &>> "$LOG_FILE"
 VALIDATE "$?" "Adding and Giving permissions"
 
 print_total_time(){
