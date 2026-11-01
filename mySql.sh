@@ -12,7 +12,7 @@ G="\e[32m"
 Y="\e[33m"
 B="\e[34m"
 N="\e[0m"
-#SCRIPT_DIR=$PWD
+
 
 if [ "$USER_ID" -ne 0 ]; then
     echo -e " $(date "+%Y-%m-%d %H:%M:%S")  | ${R} Please run the script as root user ${N}"
@@ -35,7 +35,14 @@ systemctl enable mysqld &>> "$LOG_FILE"
 systemctl start mysqld  &>> "$LOG_FILE"
 VALIDATE "$?" "Enabling & Starting MYSql service"
 
-
 mysql_secure_installation --set-root-pass "$MYSQL_ROOT_PASSWORD"
 #mysql_secure_installation --set-root-pass RoboShop@1 &>> "$LOG_FILE"
 VALIDATE "$?" "Setting Root Credentials"
+
+print_total_time(){
+    END_TIME="$(date +%s)"
+    TOTAL_TIME=$(( "$END_TIME" - "$START_TIME" ))
+    echo -e "$(date "+%Y-%m-%d %H:%M:%S")  | Script executed in :"${G} $TOTAL_TIME" seconds ${N}"  | tee -a "$LOG_FILE"
+}
+
+print_total_time
